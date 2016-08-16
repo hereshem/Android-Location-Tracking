@@ -34,7 +34,7 @@ public class UpdateLocation extends Service implements LocationListener{
           mServiceHandler.post(new SendCast(location));
           // Stop the service using the startId, so that we don't stop
           // the service in the middle of handling another job
-          stopSelf(msg.arg1);
+          //stopSelf(msg.arg1);
       }
   }
 
@@ -54,7 +54,7 @@ public class UpdateLocation extends Service implements LocationListener{
     mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
     Criteria criteria = new Criteria();
     best = mgr.getBestProvider(criteria, true);
-    mgr.requestLocationUpdates(best, 15000, 10, this);
+    mgr.requestLocationUpdates(best, 10000, 10, this);
   }
 
   @Override
@@ -95,9 +95,11 @@ public class UpdateLocation extends Service implements LocationListener{
                 i.putExtra("gotLocation", true)
                         .putExtra("latitude", location.getLatitude())
                         .putExtra("longitude", location.getLongitude())
-                        .putExtra("accuracy", location.getAccuracy())
                         .putExtra("altitude", location.getAltitude())
+                        .putExtra("accuracy", location.getAccuracy())
                         .putExtra("bearing", location.getBearing())
+                        .putExtra("speed", location.getSpeed())
+                        .putExtra("time", location.getTime())
                         .putExtra("provider", location.getProvider());
             }
             else {
@@ -110,7 +112,7 @@ public class UpdateLocation extends Service implements LocationListener{
 	@Override
 	public void onLocationChanged(Location location) {
         Log.w(DEBUG_TAG, ">>>location changed: ");
-//        mServiceHandler.post(new SendCast(location));
+        mServiceHandler.post(new SendCast(location));
 	}
 	
 	@Override

@@ -42,6 +42,7 @@ public class LocationServiceActivity extends Activity {
         PendingIntent tracking = PendingIntent.getBroadcast(getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarms = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarms.cancel(tracking);
+        stopService(new Intent(this, UpdateLocation.class));
     }
 
     private void setRecurringAlarm() {
@@ -65,9 +66,11 @@ public class LocationServiceActivity extends Activity {
                         + "\nLongitude = " + newLon
                         + "\n\nDelta lat = " + (newLat-lat)
                         + "\nDelta lon = " + (newLon-lon)
-                        + "\nAccuracy = " + intent.getFloatExtra("accuracy", 0)
                         + "\nAltitude = " + intent.getDoubleExtra("altitude", 0)
+                        + "\nAccuracy = " + intent.getFloatExtra("accuracy", 0)
                         + "\nBearing = " + intent.getFloatExtra("bearing", 0)
+                        + "\nSpeed = " + intent.getFloatExtra("speed", 0)
+                        + "\nTime = " + intent.getLongExtra("time", 0)
                         + "\n\nProvider = " + intent.getStringExtra("provider")
                         ;
                 lat = newLat;
@@ -77,7 +80,7 @@ public class LocationServiceActivity extends Activity {
             }
             else{
                 Toast.makeText(context,
-                        "Error message = " + intent.getStringExtra("message"),
+                        "Message = " + intent.getStringExtra("message"),
                         Toast.LENGTH_LONG).show();
             }
 
